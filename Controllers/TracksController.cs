@@ -1,5 +1,6 @@
 using DogRallyAPI.Data;
 using DogRallyAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -8,6 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace DogRallyAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class TracksController : ControllerBase
@@ -84,6 +86,7 @@ namespace DogRallyAPI.Controllers
 
         }
 
+      
         [HttpGet("GetUserTracks")]
         public async Task<IActionResult> GetUserTracks()
         {

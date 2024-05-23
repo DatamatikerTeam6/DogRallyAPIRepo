@@ -31,15 +31,20 @@ builder.Services.AddAuthentication(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
     {
+        ValidateActor = true,
         ValidateIssuer = true,
         ValidateAudience = true,
+        RequireExpirationTime = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        ValidIssuer = builder.Configuration.GetSection("Jwt:Issuer").Value,
+        ValidAudience = builder.Configuration.GetSection("Jwt:Audience").Value,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
+        (builder.Configuration.GetSection("Jwt:Key").Value))
     };
-});
+}
+);
+
 
 // Add services to the container
 builder.Services.AddControllers();

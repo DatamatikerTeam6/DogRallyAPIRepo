@@ -4455,11 +4455,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PITA\\Downloads\\DogRallyAPI-CRUDFunctionalityImplementedFully\\DogRallyAPI-CRUDFunctionalityImplementedFully\\DogRallyAPI.csproj",
+      "projectUniqueName": "C:\\Users\\PITA\\OneDrive\\Skrivebord\\DogRallyAPI\\DogRallyAPI.csproj",
       "projectName": "DogRallyAPI",
-      "projectPath": "C:\\Users\\PITA\\Downloads\\DogRallyAPI-CRUDFunctionalityImplementedFully\\DogRallyAPI-CRUDFunctionalityImplementedFully\\DogRallyAPI.csproj",
+      "projectPath": "C:\\Users\\PITA\\OneDrive\\Skrivebord\\DogRallyAPI\\DogRallyAPI.csproj",
       "packagesPath": "C:\\Users\\PITA\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PITA\\Downloads\\DogRallyAPI-CRUDFunctionalityImplementedFully\\DogRallyAPI-CRUDFunctionalityImplementedFully\\obj\\",
+      "outputPath": "C:\\Users\\PITA\\OneDrive\\Skrivebord\\DogRallyAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\PITA\\AppData\\Roaming\\NuGet\\NuGet.Config",

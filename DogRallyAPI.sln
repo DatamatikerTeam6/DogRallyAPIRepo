@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DogRallyAPI", "DogRallyAPI.csproj", "{F666FF99-D405-449E-AACB-4C43B1FB4F99}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DogRallyMVC", "..\..\DogRallyMVC-CRUDFunctionalityFullyImplemented\DogRallyMVC-CRUDFunctionalityFullyImplemented\DogRallyMVC.csproj", "{A6607C48-9FA8-4349-9935-B289321BDCAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DogRallyMVC", "..\DogRallyMVC\DogRallyMVC.csproj", "{5B0E8E16-6CB1-4DBD-8E7E-6FD41F45DF6D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{F666FF99-D405-449E-AACB-4C43B1FB4F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F666FF99-D405-449E-AACB-4C43B1FB4F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F666FF99-D405-449E-AACB-4C43B1FB4F99}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A6607C48-9FA8-4349-9935-B289321BDCAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A6607C48-9FA8-4349-9935-B289321BDCAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A6607C48-9FA8-4349-9935-B289321BDCAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A6607C48-9FA8-4349-9935-B289321BDCAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0E8E16-6CB1-4DBD-8E7E-6FD41F45DF6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0E8E16-6CB1-4DBD-8E7E-6FD41F45DF6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0E8E16-6CB1-4DBD-8E7E-6FD41F45DF6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0E8E16-6CB1-4DBD-8E7E-6FD41F45DF6D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -46,33 +46,35 @@ namespace DogRallyAPI.Controllers
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                var tokenString = GenerateJwtToken(user);
-                return Ok(new { Token = tokenString });
+                var tokenString = GenerateTokenString(user);
+                return Ok(tokenString);
             }
 
             return Unauthorized();
         }
 
-        [HttpGet("GenerateJwtToken")]
-        private string GenerateJwtToken(ApplicationUser user)
+        [HttpGet("GenerateTokenString")]
+        private string GenerateTokenString(ApplicationUser user)
         {
-            var claims = new[]
+           var claims = new List<Claim>
             {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
+                new Claim(ClaimTypes.Email, user.UserName),
+                new Claim(ClaimTypes.Role, "Admin")
+            };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:Key").Value));
+            SigningCredentials signingCred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
 
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Issuer"],
+            var securityToken = new JwtSecurityToken(
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
-                signingCredentials: creds);
+                expires: DateTime.Now.AddMinutes(60),
+                issuer: _configuration.GetSection("Jwt:Issuer").Value,
+                audience: _configuration.GetSection("Jwt:Audience").Value,
+                signingCredentials:signingCred);
+                
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
+            return tokenString;
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }
