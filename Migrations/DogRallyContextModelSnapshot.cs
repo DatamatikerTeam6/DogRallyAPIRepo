@@ -138,6 +138,10 @@ namespace DogRallyAPI.Migrations
                     b.Property<string>("TrackName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("TrackID");
 
                     b.ToTable("Track", (string)null);

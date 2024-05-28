@@ -32,6 +32,7 @@ namespace DogRallyAPI.Controllers
 
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "User");
                 return Ok(new { Result = "Din bruger er blevet oprettet." });
             }
 
@@ -46,21 +47,27 @@ namespace DogRallyAPI.Controllers
             if (result.Succeeded)
             {
                 var user = await _userManager.FindByEmailAsync(model.Email);
-                var tokenString = GenerateTokenString(user);
+                var tokenString = await GenerateTokenString(user);
                 return Ok(tokenString);
             }
-
             return Unauthorized();
         }
 
-        [HttpGet("GenerateTokenString")]
-        private string GenerateTokenString(ApplicationUser user)
+        private async Task<string> GenerateTokenString(ApplicationUser user)
         {
-           var claims = new List<Claim>
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Email, user.UserName),
-                new Claim(ClaimTypes.Role, "Admin")
-            };
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
+             };
+
+            // Add the user's role to claim
+            foreach (var role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:Key").Value));
             SigningCredentials signingCred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
@@ -70,11 +77,10 @@ namespace DogRallyAPI.Controllers
                 expires: DateTime.Now.AddMinutes(60),
                 issuer: _configuration.GetSection("Jwt:Issuer").Value,
                 audience: _configuration.GetSection("Jwt:Audience").Value,
-                signingCredentials:signingCred);
-                
+                signingCredentials: signingCred);
+
             string tokenString = new JwtSecurityTokenHandler().WriteToken(securityToken);
             return tokenString;
-
         }
     }
 }

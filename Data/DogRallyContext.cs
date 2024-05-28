@@ -21,29 +21,34 @@ namespace DogRallyAPI.Data
         // Database tablenames override
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder); // Ensure Identity tables are created
+            // Ensure Identity tables are created
+            base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Exercise>().ToTable("Exercise");
             modelBuilder.Entity<Track>().ToTable("Track");
             modelBuilder.Entity<TrackExercise>().ToTable("TrackExercise");
 
+            // Composite primary key
             modelBuilder.Entity<TrackExercise>()
-                .HasKey(te => new { te.ForeignTrackID, te.ForeignExerciseID });  // Composite primary key
+                .HasKey(te => new { te.ForeignTrackID, te.ForeignExerciseID });
 
+            // Composite primary key
             modelBuilder.Entity<TrackExerciseDTO>()
-                .HasKey(te => new { te.ForeignTrackID, te.ForeignExerciseID });  // Composite primary key
+                .HasKey(te => new { te.ForeignTrackID, te.ForeignExerciseID });
 
+            // Ensure cascading delete is configured 
             modelBuilder.Entity<TrackExercise>()
                 .HasOne(te => te.Track)
                 .WithMany(t => t.TrackExercises)
                 .HasForeignKey(te => te.ForeignTrackID)
-                .OnDelete(DeleteBehavior.Cascade);  // Ensure cascading delete is configured as needed
+                .OnDelete(DeleteBehavior.Cascade);
 
+            // Ensure cascading delete is configured 
             modelBuilder.Entity<TrackExercise>()
                 .HasOne(te => te.Exercise)
                 .WithMany(e => e.TrackExercises)
                 .HasForeignKey(te => te.ForeignExerciseID)
-                .OnDelete(DeleteBehavior.Cascade);  // Ensure cascading delete is configured as needed
+                .OnDelete(DeleteBehavior.Cascade);  
 
             // Get data from view
             modelBuilder.Entity<TrackExerciseDTO>().ToView("TrackExerciseView");

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -26,7 +27,7 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 
-// VI SKAL TILFØJE NEDENSTÅENDE OG FÅ BRUGT DET!
+// Use AddJwtBearer method to set up the JWT authentification scheme.  
 .AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -40,7 +41,9 @@ builder.Services.AddAuthentication(options =>
         ValidIssuer = builder.Configuration.GetSection("Jwt:Issuer").Value,
         ValidAudience = builder.Configuration.GetSection("Jwt:Audience").Value,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
-        (builder.Configuration.GetSection("Jwt:Key").Value))
+        (builder.Configuration.GetSection("Jwt:Key").Value)),
+        // Add role claim
+        RoleClaimType = ClaimTypes.Role 
     };
 }
 );
@@ -85,7 +88,8 @@ app.UseHttpsRedirection();
 
 app.UseCors(MyAllowSpecificOrigins);
 
-app.UseAuthentication(); // Add authentication middleware
+// Add authentication middleware
+app.UseAuthentication(); 
 
 app.UseAuthorization();
 

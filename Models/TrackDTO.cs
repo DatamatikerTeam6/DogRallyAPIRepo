@@ -21,5 +21,9 @@ namespace DogRallyAPI.Models
         [JsonPropertyName("trackDate")]
         [Required]
         public DateTime TrackDate { get; set; }
+
+        [JsonPropertyName("userID")]
+        [Required]
+        public string UserID { get; set; }
     }
 }

@@ -45,6 +45,7 @@ namespace DogRallyAPI.Models
                     EmailConfirmed = true
                 };
 
+
                 if (userManager.FindByEmailAsync(adminUser.Email).Result == null)
                 {
                     var result = userManager.CreateAsync(adminUser, "Admin123!").Result;
@@ -53,6 +54,25 @@ namespace DogRallyAPI.Models
                         userManager.AddToRoleAsync(adminUser, "Admin").Wait();
                     }
                 }
+
+                // Seed regular user
+                var regularUser = new ApplicationUser
+                {
+                    UserName = "regular@dogrally.com",
+                    Email = "regular@dogrally.com",
+                    EmailConfirmed = true
+                };
+
+                if (userManager.FindByEmailAsync(regularUser.Email).Result == null)
+                {
+                    var result = userManager.CreateAsync(regularUser, "Regular123!").Result;
+                    if (result.Succeeded)
+                    {
+                        userManager.AddToRoleAsync(regularUser, "User").Wait();
+                    }
+                }
+
+
 
                 // Seed Exercises data
                 if (!context.Exercises.Any())

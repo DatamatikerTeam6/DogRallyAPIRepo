@@ -7,8 +7,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
+
 namespace DogRallyAPI.Controllers
 {
+
     [Authorize]
     [ApiController]
     [Route("[controller]")]
@@ -21,6 +23,7 @@ namespace DogRallyAPI.Controllers
             _context = context;
         }
 
+        [Authorize(Roles="Admin, User")]
         [HttpPost("CreateTrack")]
         public async Task<IActionResult> CreateTrack([FromBody] TrackExerciseViewModelDTO viewModel)
         {
@@ -30,10 +33,13 @@ namespace DogRallyAPI.Controllers
                 {
                     TrackID = viewModel.Track.TrackID,
                     TrackName = viewModel.Track.TrackName,
-                    TrackDate = viewModel.Track.TrackDate
+                    TrackDate = viewModel.Track.TrackDate,
+                    UserID = viewModel.Track.UserID
                 };
                 _context.Tracks.Add(track);
-                await _context.SaveChangesAsync(); // Create the track to access its ID
+
+                // Create the track to access its ID
+                await _context.SaveChangesAsync();
 
                 foreach (var exerciseInViewModel in viewModel.Exercises)
                 {
@@ -46,7 +52,7 @@ namespace DogRallyAPI.Controllers
                             ForeignTrackID = track.TrackID,
                             ForeignExerciseID = exerciseInViewModel.ExerciseID,
                             TrackExercisePositionX = exerciseInViewModel.ExercisePositionX,
-                            TrackExercisePositionY = exerciseInViewModel.ExercisePositionY,
+                            TrackExercisePositionY = exerciseInViewModel.ExercisePositionY
                         };
                         //Add trackExercise to database
                         _context.Add(trackExercise);
@@ -58,6 +64,7 @@ namespace DogRallyAPI.Controllers
             return BadRequest(ModelState);
         }
 
+        [AllowAnonymous]
         [HttpGet("ReadExercises")]
         public async Task<IActionResult> ReadExercises()
         {
@@ -73,6 +80,7 @@ namespace DogRallyAPI.Controllers
             return Ok(exerciseDTOs);
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("ReadTrack")]
         public async Task<IActionResult> ReadTrack(int? trackID)
         {
@@ -83,16 +91,20 @@ namespace DogRallyAPI.Controllers
                 return Ok(trackExerciseDTOs);
             }
             return BadRequest(ModelState);
-
         }
 
-      
+        [Authorize(Roles = "Admin, User")]
         [HttpGet("GetUserTracks")]
-        public async Task<IActionResult> GetUserTracks()
+        public async Task<IActionResult> GetUserTracks(string userID)
         {
+            if(userID == null)
+            {
+                return Unauthorized();  
+            }
+
             if (ModelState.IsValid)
             {
-                var allUserTracks = await _context.Tracks.ToListAsync();
+                var allUserTracks = await _context.Tracks.Where(track => track.UserID == userID).ToListAsync();
 
                 var allUserTracksDTO = allUserTracks.Select(u => new TrackDTO
                 {
@@ -103,9 +115,30 @@ namespace DogRallyAPI.Controllers
                 return Ok(allUserTracksDTO);
             }
             return BadRequest(ModelState);
-
         }
 
+       
+        [Authorize(Roles = "Admin")]
+        [HttpGet("GetAllTracks")]
+        public async Task<IActionResult> GetAllTracks()
+        {
+            if (ModelState.IsValid)
+            {
+                var allTracks = await _context.Tracks.ToListAsync();
+
+                var allTracksDTO = allTracks.Select(u => new TrackDTO
+                {
+                    TrackID = u.TrackID,
+                    TrackName = u.TrackName,
+                    TrackDate = u.TrackDate,
+                });
+                return Ok(allTracksDTO);
+            }
+            return BadRequest(ModelState);
+        }
+
+
+        [Authorize(Roles = "Admin, User")]
         [HttpPut("UpdateTrack")]
         public async Task<IActionResult> UpdateTrack([FromBody] TrackExerciseViewModelDTO viewModel)
         {
@@ -145,7 +178,8 @@ namespace DogRallyAPI.Controllers
                     // Add new trackExercise if it doesn't exist and the exercise is valid
                     trackToUpdate.TrackExercises.Add(new TrackExercise
                     {
-                        ForeignTrackID = trackToUpdate.TrackID, // This sets the relationship
+                        // This sets the relationship
+                        ForeignTrackID = trackToUpdate.TrackID,
                         ForeignExerciseID = exerciseViewModel.ExerciseID,
                         TrackExercisePositionX = exerciseViewModel.ExercisePositionX,
                         TrackExercisePositionY = exerciseViewModel.ExercisePositionY
@@ -157,6 +191,7 @@ namespace DogRallyAPI.Controllers
             return Ok();
         }
 
+        [Authorize(Roles = "Admin, User")]
         [HttpDelete("DeleteTrack/{id}")]
         public async Task<IActionResult> DeleteTrack(int id)
         {
@@ -173,7 +208,6 @@ namespace DogRallyAPI.Controllers
             await _context.SaveChangesAsync();
             return Ok($"Track with ID {id} has been deleted.");
         }
-
     }
 }
 

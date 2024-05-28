@@ -6,6 +6,7 @@
         public int TrackID { get; set; }
         public string? TrackName { get; set; }
         public DateTime TrackDate { get; set; }
+        public string UserID { get; set; }
 
         // Navigation properties
         public List<Exercise> Exercises { get; set; }

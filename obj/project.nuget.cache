@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/U/FDx/Hod4X78Qs2FrDjgPBXYh4meOdX/8EilT0WuvZ8X8ksLwcz7uwqO8OvqxX/NtQrRZxqmzsq28exkXpCA==",
+  "dgSpecHash": "6qkC3S9XCVOCBOjpcKCQuJOKquzojaFIStgNTJhVRq8D9sVVSIk0GaUwe8WkOCpyspPrDDHwKkX+zpBLs6UuZA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\PITA\\OneDrive\\Skrivebord\\DogRallyAPI\\DogRallyAPI.csproj",
+  "projectFilePath": "C:\\Users\\PITA\\OneDrive\\Skrivebord\\DogRallyAPIRepo\\DogRallyAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PITA\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\PITA\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
